@@ -1,43 +1,38 @@
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx-container
+  web:
+    build: .
+    container_name: php-apache
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./src:/var/www/html
+      - .:/var/www/html
+    environment:
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_GROUP: www-data
     depends_on:
-      - php
+      - db
 
-  php:
-    build:
-      context: ./php/
-    container_name: php-container
-    volumes:
-      - ./src:/var/www/html
-
-  mariadb:
+  db:
     image: mariadb:latest
-    container_name: mariadb-container
+    container_name: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
 
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin
     environment:
-      PMA_HOST: mariadb
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "8081:80"
     depends_on:
-      - mariadb
+      - db
 
 volumes:
-  mariadb_data:
+  db_data:

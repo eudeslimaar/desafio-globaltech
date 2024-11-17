@@ -1,0 +1,12 @@
+# Ativar o mod_rewrite
+RewriteEngine On
+
+# Habilitar a correspondência de URLs amigáveis
+Options -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# Reescrever todas as outras URLs para index.php
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
