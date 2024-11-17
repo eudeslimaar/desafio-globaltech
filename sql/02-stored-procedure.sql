@@ -13,7 +13,7 @@ BEGIN
             CONCAT('cliente', i, '@', ELT(FLOOR(1 + (RAND() * 3)), 'gmail.com', 'live.com', 'outlook.com')),
             DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY));
         SET i = i + 1;
-END WHILE;
+    END WHILE;
 
     SET i = 1;
 
@@ -22,7 +22,7 @@ END WHILE;
         VALUES
             (FLOOR(1 + RAND() * 20), DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), IF(RAND() > 0.5, 'completado', 'pendiente'));
         SET i = i + 1;
-END WHILE;
+    END WHILE;
 
     SET i = 1;
 
@@ -31,10 +31,10 @@ END WHILE;
         VALUES
             (i, CONCAT('Producto ', FLOOR(1 + RAND() * 100)), FLOOR(1 + RAND() * 10), ROUND(RAND() * 100, 2));
         SET i = i + 1;
-END WHILE;
+    END WHILE;
 
 END //
 
-DELIMITER;
+DELIMITER ;
 
 CALL InsertarDatosIniciales();
