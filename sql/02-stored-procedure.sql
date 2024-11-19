@@ -20,13 +20,14 @@ BEGIN
     WHILE i <= 10000 DO
         INSERT INTO pedidos (cliente_id, fecha_pedido, estado)
         VALUES
-            (FLOOR(1 + RAND() * 20), DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), IF(RAND() > 0.5, 'completado', 'pendiente'));
+            (FLOOR(1 + RAND() * 20), DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY),
+            ELT(FLOOR(1 + (RAND() * 3)), 'pendiente', 'enviado', 'entregado'));
         SET i = i + 1;
     END WHILE;
 
     SET i = 1;
 
-    WHILE i <= 10000 DO
+    WHILE i <= 18 DO
         INSERT INTO detalle_pedido (pedido_id, producto, cantidad, precio_unitario)
         VALUES
             (i, CONCAT('Producto ', FLOOR(1 + RAND() * 100)), FLOOR(1 + RAND() * 10), ROUND(RAND() * 100, 2));
