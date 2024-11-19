@@ -17,7 +17,7 @@ $router->get('',                                     [DashboardController::class
 
 // CLIENTES
 $router->get('clientes',                             [ClienteController::class, 'getAllClientes']);
-$router->get('clientes/sin-pedidos',                 [ClienteController::class, 'clientesSinPedidos']);
+$router->get('clientes/inactivos',                   [ClienteController::class, 'clientesSinPedidos']);
 $router->get('clientes/{id}',                        [ClienteController::class, 'getClienteById']);
 $router->get('clientes/{id}/editar',                 [ClienteController::class, 'editCliente']);
 $router->post('clientes/{id}/actualizar',            [ClienteController::class, 'updateCliente']);

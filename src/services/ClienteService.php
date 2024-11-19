@@ -35,4 +35,9 @@ class ClienteService {
     public function deleteCliente($id) {
         return $this->clienteRepository->delete($id);
     }
+
+    public function obtenerClientesSinPedidos(): array
+    {
+        return $this->clienteRepository->obtenerClientesSinPedidos();
+    }
 }

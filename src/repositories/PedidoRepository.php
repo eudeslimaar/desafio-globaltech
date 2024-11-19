@@ -193,7 +193,7 @@ class PedidoRepository {
         }
     }
 
-    public function inserirPedidoComDetalhes(int $clienteId, string $fechaPedido, string $estado, array $productos): bool
+    public function inserirPedidoConDetalles(int $clienteId, string $fechaPedido, string $estado, array $productos): bool
     {
         try {
             $this->db->beginTransaction();
@@ -228,35 +228,5 @@ class PedidoRepository {
             return false;
         }
     }
-
-    public function obtenerClientesSinPedidos(): array
-    {
-        try {
-            $sql = "
-            SELECT c.id, c.nombre, c.email, c.fecha_registro
-            FROM clientes c
-            LEFT JOIN pedidos p ON c.id = p.cliente_id
-            WHERE p.id IS NULL
-        ";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-
-            $clientes = [];
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $clientes[] = new Cliente(
-                    $row['id'],
-                    $row['nombre'],
-                    $row['email'],
-                    $row['fecha_registro']
-                );
-            }
-
-            return $clientes;
-        } catch (PDOException $e) {
-            error_log("Error al obtener clientes sin pedidos: " . $e->getMessage());
-            return [];
-        }
-    }
-
 }
 

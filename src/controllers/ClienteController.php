@@ -1,10 +1,10 @@
 <?php
 namespace controllers;
+
 use Exception;
 use services\ClienteService;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-
 
 class ClienteController {
     private ClienteService $clienteService;
@@ -33,11 +33,11 @@ class ClienteController {
     public function createCliente(): void
     {
         $input = json_decode(file_get_contents('php://input'), true);
-        $nome = $input['nome'] ?? '';
+        $nombre = $input['nombre'] ?? '';
         $email = $input['email'] ?? '';
 
         try {
-            $clientes = $this->clienteService->createCliente($nome, $email);
+            $clientes = $this->clienteService->createCliente($nombre, $email);
             echo json_encode(['status' => 'success', 'clientes' => $clientes]);
         } catch (Exception $e) {
             http_response_code(400);
@@ -47,24 +47,23 @@ class ClienteController {
 
     public function updateCliente($id): void
     {
-        $nome = $_POST['nombre'] ?? '';
+        $nombre = $_POST['nombre'] ?? '';
         $email = $_POST['email'] ?? '';
 
         try {
-            $this->clienteService->updateCliente($id, $nome, $email);
-            echo json_encode(['status' => 'success', 'message' => 'Cliente atualizado com sucesso']);
+            $this->clienteService->updateCliente($id, $nombre, $email);
+            echo json_encode(['status' => 'success', 'message' => 'Cliente actualizado con éxito']);
         } catch (Exception $e) {
             http_response_code(400);
             echo json_encode(['message' => $e->getMessage()]);
         }
     }
 
-
     public function deleteCliente($id): void
     {
         try {
             $this->clienteService->deleteCliente($id);
-            echo json_encode(['status' => 'success', 'message' => 'Cliente deletado com sucesso']);
+            echo json_encode(['status' => 'success', 'message' => 'Cliente eliminado con éxito']);
         } catch (Exception $e) {
             http_response_code(400);
             echo json_encode(['message' => $e->getMessage()]);
@@ -79,10 +78,26 @@ class ClienteController {
                 echo view('clientes.editar', ['cliente' => $cliente]);
             } else {
                 http_response_code(404);
-                echo view('404', ['message' => 'Cliente não encontrado.']);
+                echo view('404');
             }
         } catch (\Exception $e) {
             http_response_code(500);
         }
     }
+
+    public function clientesSinPedidos(): void
+    {
+        try {
+            $clientes = $this->clienteService->obtenerClientesSinPedidos();
+            
+            if (!empty($clientes)) {
+                echo view('clientes.inactivos', ['clientes' => $clientes]);
+            } else {
+                echo view('clientes.inactivos', ['mensaje' => 'No se encontraron clientes sin pedidos.']);
+            }
+        } catch (\Exception $e) {
+            http_response_code(500);
+        }
+    }
+
 }
