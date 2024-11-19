@@ -84,4 +84,10 @@ class PedidoService {
         }
         return $this->pedidoRepository->insertarPedidoConDetalles($clienteId, $fechaPedido, $estado, $productos);
     }
+
+    public function obtenerClientesSinPedidos(): array
+    {
+        return $this->clienteRepository->obtenerClientesSinPedidos();
+    }
+
 }

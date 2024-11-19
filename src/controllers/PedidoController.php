@@ -182,4 +182,22 @@ class PedidoController {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    public function clientesSinPedidos(): void
+    {
+        try {
+            $clientes = $this->clienteService->obtenerClientesSinPedidos();
+
+            if (empty($clientes)) {
+                http_response_code(404);
+                echo view('clientes.lista', ['message' => 'No se encontraron clientes sin pedidos.']);
+            } else {
+                echo view('clientes.lista', ['clientes' => $clientes]);
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo view('500', ['message' => 'Error al obtener clientes sin pedidos.']);
+        }
+    }
+
 }
