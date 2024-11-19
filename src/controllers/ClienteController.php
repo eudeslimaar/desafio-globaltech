@@ -89,7 +89,7 @@ class ClienteController {
     {
         try {
             $clientes = $this->clienteService->obtenerClientesSinPedidos();
-            
+
             if (!empty($clientes)) {
                 echo view('clientes.inactivos', ['clientes' => $clientes]);
             } else {
